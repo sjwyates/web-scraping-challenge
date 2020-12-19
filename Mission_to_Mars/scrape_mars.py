@@ -1,5 +1,5 @@
 from splinter import Browser
-from bs4 import bs as bs
+from bs4 import BeautifulSoup as bs
 import pandas as pd
 import requests
 import time
