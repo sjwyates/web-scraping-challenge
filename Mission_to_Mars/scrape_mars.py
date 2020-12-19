@@ -41,8 +41,8 @@ def scrape_info():
     featured_img_url = urls['nasa_jpl']['base'] + nasa_jpl_soup.find('article', class_='carousel_item').attrs['style'].split("'")[1]
 
     # third visit
-    mars_facts_df = pd.DataFrame(pd.read_html(urls['mars_facts'])[0])
-    mars_facts_html = mars_facts_df.to_html()
+    mars_facts_df = pd.DataFrame(pd.read_html(urls['mars_facts'])[0]).rename(columns={0: 'Description', 1: 'Mars'})
+    mars_facts_html = mars_facts_df.to_html(index=False, classes="table is-bordered is-striped is-hoverable is-full-width", justify="inherit")
 
     # fourth visit
     astrogeology_soup = visit_wait_return(urls['astrogeology']['base'] + urls['astrogeology']['query'])
