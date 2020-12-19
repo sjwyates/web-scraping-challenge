@@ -23,7 +23,7 @@ def scrape_info():
     # helper function
     def visit_wait_return(url):
         browser.visit(url)
-        time.sleep(5)
+        time.sleep(2)
         html = browser.html
         return bs(html, 'html.parser')
 
@@ -54,7 +54,7 @@ def scrape_info():
         links_to_results.append({ 'link': link, 'title': title })
     links_to_images = []
     for link in links_to_results:
-        this_page_soup = visit_wait_return(link)
+        this_page_soup = visit_wait_return(urls['astrogeology']['base'] + link['link'])
         downloads = this_page_soup.find('div', class_='downloads')
         img_url = downloads.find('ul').find_all('a')[1]['href']
         links_to_images.append({ 'title': link['title'], 'img_url': img_url })
