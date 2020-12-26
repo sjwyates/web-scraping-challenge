@@ -13,7 +13,7 @@
 
         <section id="hero" class="hero is-medium is-dark is-bold">
             <div class="hero-body">
-                <div class="container">
+                <div class="container has-text-centered">
                     <h1 class="title is-size-1 has-text-danger">
                         Mission to Mars
                     </h1>
@@ -24,39 +24,49 @@
             </div>
         </section>
 
-        <section id="feature">
+        <section id="feature" class="p-5">
             <div class="container">
-                <h2 class="title">
-                    Latest Mars News
-                </h2>
-                <h3>
-                    {{ mars_data.nasa_news.title }}
-                </h3>
-                <p>
-                    {{ mars_data.nasa_news.text }}
-                </p>
-                <div class="container columns">
-                    <div class="column is-two-thirds">
+                <div class="my-3">
+                    <h2 class="title">
+                        Latest Mars News
+                    </h2>
+                    <p class="title is-5">
+                        {{ mars_data.nasa_news.title }}
+                    </p>
+                    <p class="subtitle is-5">
+                        {{ mars_data.nasa_news.text }}
+                    </p>
+                </div>
+                <div class="container columns is-vcentered my-6">
+                    <div class="column">
                         <h2 class="title">
                             Featured Mars Image
                         </h2>
-                        <img src="{{ mars_data.nasa_jpl.featured_img_url }}" alt="">
+                        <img src="{{ mars_data.nasa_jpl.featured_img_url }}" alt="Featured image">
                     </div>
-                    <div class="column is-one-third">
+                    <div class="column is-narrow">
                         {{ mars_data.mars_facts.html | safe }}
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="hemispheres">
+        <section id="hemispheres" class="p-5">
             <div class="container">
-                <div class="columns">
+                <h2 class="title has-text-centered">Mars Hemispheres</h2>
+                <hr class="has-background-grey-light">
+                <div class="columns is-multiline is-3">
                     {% for image in mars_data.astrogeology.img_urls %}
-                        <figure class="column">
-                            <img src="{{ image.img_url }}" alt="{{ image.title }}">
-                            <figcaption>{{ image.title }}</figcaption>
-                        </figure>
+                        <div class="column is-half-desktop is-full-tablet">
+                            <div class="card">
+                                <div class="card-image p-3">
+                                    <figure class="image">
+                                        <img class="pb-3" src="{{ image.img_url }}" alt="{{ image.title }}">
+                                        <figcaption class="subtitle py-3">{{ image.title }}</figcaption>
+                                    </figure>
+                                </div>                              
+                            </div>
+                        </div>
                     {% endfor %}
                 </div>
             </div>
