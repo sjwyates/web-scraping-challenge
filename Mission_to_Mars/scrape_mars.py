@@ -21,9 +21,9 @@ def scrape_info():
     }
 
     # helper function
-    def visit_wait_return(url):
+    def visit_wait_return(url, wait):
         browser.visit(url)
-        time.sleep(2)
+        time.sleep(wait)
         html = browser.html
         return bs(html, 'html.parser')
 
@@ -31,13 +31,13 @@ def scrape_info():
     browser = init_browser()
 
     # first visit
-    nasa_news_soup = visit_wait_return(urls['nasa_news'])
+    nasa_news_soup = visit_wait_return(urls['nasa_news'], 3)
     articles = nasa_news_soup.find_all('div', class_='image_and_description_container')
     article_1_title = articles[0].find('h3').get_text(strip=True)
     article_1_text = articles[0].find('div', class_='article_teaser_body').get_text(strip=True)
 
     # second visit
-    nasa_jpl_soup = visit_wait_return(urls['nasa_jpl']['base'] + urls['nasa_jpl']['query'])
+    nasa_jpl_soup = visit_wait_return(urls['nasa_jpl']['base'] + urls['nasa_jpl']['query'], 3)
     featured_img_url = urls['nasa_jpl']['base'] + nasa_jpl_soup.find('article', class_='carousel_item').attrs['style'].split("'")[1]
 
     # third visit
@@ -45,7 +45,7 @@ def scrape_info():
     mars_facts_html = mars_facts_df.to_html(index=False, classes="table is-bordered is-striped is-hoverable is-full-width", justify="inherit")
 
     # fourth visit
-    astrogeology_soup = visit_wait_return(urls['astrogeology']['base'] + urls['astrogeology']['query'])
+    astrogeology_soup = visit_wait_return(urls['astrogeology']['base'] + urls['astrogeology']['query'], 1)
     items = astrogeology_soup.find_all('div', class_='item')
     links_to_results = []
     for item in items:
@@ -54,10 +54,9 @@ def scrape_info():
         links_to_results.append({ 'link': link, 'title': title })
     links_to_images = []
     for link in links_to_results:
-        this_page_soup = visit_wait_return(urls['astrogeology']['base'] + link['link'])
-        downloads = this_page_soup.find('div', class_='downloads')
-        img_url = downloads.find('ul').find_all('a')[1]['href']
-        links_to_images.append({ 'title': link['title'], 'img_url': img_url })
+        this_page_soup = visit_wait_return(urls['astrogeology']['base'] + link['link'], 0)
+        img_url = this_page_soup.find('img', class_='wide-image')['src']
+        links_to_images.append({ 'title': link['title'], 'img_url': urls['astrogeology']['base'] + img_url })
 
     browser.quit()
 
